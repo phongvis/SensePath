@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="SensePath provides deeper understanding of online sensemaking.">
+        <meta name="author" content="phongvis - Phong Nguyen">
+        <title>SensePath - Timeline View</title>
+
+        <link rel="icon" href="../../logo/logo16.png">
+		<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-sm.min.css">
+        <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/core.css">
+        <!-- <link rel="stylesheet" href="../css/sensepath-presentation.css"> -->
+        <link rel="stylesheet" href="../css/sensepath.css">
+
+        <style>
+            body {
+                overflow: hidden;
+            }
+
+            .sm-provenance-container {
+                overflow: hidden;
+                position: relative;
+                margin: 2px;
+                height: 100%;
+            }
+
+            svg {
+                width: 100%;
+                position: absolute;
+                margin: 2px;
+            }
+
+            #captureToolbar .btn, #loadToolbar .btn {
+                padding: 2px 4px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="sm-provenance-container"></div>
+        <div class='hide'>
+            <a id="btnSave"></a>
+            <input id="btnTmpLoadJson" type="file">
+            <input id="btnTmpLoadVideo" type="file">
+        </div>
+        <div style="position: fixed; float: right; right: 30px; top: 2px" id='captureToolbar'>
+            <button class="btn btn-default" id='btnRecord'>
+                <span class="glyphicon glyphicon-record"></span> Record
+            </button>
+            <button class="btn btn-default hide" id='btnStop'>
+                <span class="glyphicon glyphicon-stop"></span> Stop
+            </button>
+        </div>
+        <div style="position: fixed; float: right; right: 30px; bottom: 2px" class="btn-group-vertical" id='loadToolbar'>
+            <button class="btn btn-default glyphicon glyphicon-road" id='btnLoadJson' title='Open Action Capture'></button>
+            <button class="btn btn-default glyphicon glyphicon-film" id='btnLoadVideo' title='Open Video Capture'></button>
+        </div>
+
+        <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="../bower_components/jquery-ui.min.js"></script>
+        <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../bower_components/d3/d3.min.js"></script>
+
+        <script src="../js/core.js"></script>
+        <script src="../js/misc/sugar.js"></script>
+        <script src="../js/misc/widgets.js"></script>
+        <script src="../js/vis/sensepath.js"></script>
+        <script src="index.js"></script>
+    </body>
+</html>

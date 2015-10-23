@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SensePath Options</title>
+        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-sm.min.css">
+    </head>
+
+    <body style="padding: 5px">
+        <div>
+            <h4>Mode</h4>
+            <label class='radio-inline'>
+                <input type="radio" name="mode" value="capture"> Capture
+            </label>
+            <label class='radio-inline'>
+                <input type="radio" name="mode" value="analysis"> Analysis
+            </label>
+        </div>
+        <div id='analysisSettings'>
+            <br>
+            <h4>Views</h4>
+            <label class='checkbox-inline'>
+                <input type="checkbox" id="ckbShowBrowser"> Browser
+            </label>
+            <label class='checkbox-inline'>
+                <input type="checkbox" id="ckbShowVideo"> Playback
+            </label>
+            <label class='checkbox-inline'>
+                <input type="checkbox" id="ckbShowText"> Text
+            </label>
+        </div>
+        <div id='captureSettings'>
+            <br>
+            <h4>Misc</h4>
+            <label class='checkbox-inline'>
+                <input type="checkbox" id="ckbCaptureImage"> Capture image (use much memory, ok for half-hour sessions)
+            </label>
+        </div>
+
+        <script src="options.js"></script>
+    </body>
+</html>
