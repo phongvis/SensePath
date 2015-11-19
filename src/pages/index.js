@@ -5,6 +5,7 @@ $(function() {
 
     var sensepath,
         lastActiveItem,
+        lastActiveBrowsingItem,
         lastUrl,
         lastSearchAction,
         startRecordingTime,
@@ -403,20 +404,36 @@ $(function() {
                         url = new URL(lastActiveItem.url);
                         var prevParams = sm.getQueryStringFromSearch(url.search);
 
-                        // Three types: add, remove, update
-                        if (!currentParams || !prevParams) return;
+                        if (!currentParams && !prevParams) return;
 
-                        for (var key in currentParams) {
-                            if (key in prevParams) {
-                                if (prevParams[key] !== currentParams[key]) { // Update
-                                    filters.push("update '" + key + "' from '" + decodeURIComponent(prevParams[key]) + "'' to '" + decodeURIComponent(currentParams[key]) + "'");
+                        // Three types: add, remove, update
+                        if (currentParams) {
+                            if (prevParams) {
+                                for (var key in currentParams) {
+                                    if (key in prevParams) {
+                                        if (prevParams[key] !== currentParams[key]) { // Update
+                                            filters.push("update '" + key + "' from '" + decodeURIComponent(prevParams[key]) + "'' to '" + decodeURIComponent(currentParams[key]) + "'");
+                                        }
+                                    } else { // Add
+                                        filters.push("add '" + key + "' '" + decodeURIComponent(currentParams[key]) + "'");
+                                    }
                                 }
-                            } else { // Add
-                                filters.push("add '" + key + "' '" + decodeURIComponent(currentParams[key]) + "'");
+                                for (var key in prevParams) {
+                                    if (!(key in currentParams)) { // Remove
+                                        filters.push("remove '" + key + "' '" + decodeURIComponent(prevParams[key]) + "'");
+                                    }
+                                }
+                            } else {
+                                // previous URL has no params, so all current params must have been added
+                                for (var key in currentParams) {
+                                    // Add
+                                    filters.push("add '" + key + "' '" + decodeURIComponent(currentParams[key]) + "'");
+                                }
                             }
-                        }
-                        for (var key in prevParams) {
-                            if (!(key in currentParams)) { // Remove
+                        } else {
+                            // current URL has no params, so all previous params must have been removed
+                            for (var key in prevParams) {
+                                // Remove
                                 filters.push("remove '" + key + "' '" + decodeURIComponent(prevParams[key]) + "'");
                             }
                         }
@@ -429,6 +446,7 @@ $(function() {
                 }
 
                 lastActiveItem = item;
+                if (isBrowsingType(item.type)) lastActiveBrowsingItem = item;
 
                 if (!merged) {
                     data.push(item);
@@ -588,6 +606,7 @@ $(function() {
 
         $("#btnStop").click(function() {
             listening = false;
+            lastUrl = lastActiveItem = lastSearchAction = lastActiveBrowsingItem = null;
             d3.select("#btnRecord").classed('hide', listening);
             d3.select("#btnStop").classed('hide', !listening);
             $("#btnSave").get(0).click();
@@ -675,14 +694,12 @@ $(function() {
             // Get active tab
             chrome.tabs.query({ active: true }, function(tabs) {
                 var tab = tabs[0];
-                if (!lastActiveItem || tab.status !== "complete" || isTabIgnored(tab)) return;
+                if (!lastActiveBrowsingItem || tab.status !== "complete" || isTabIgnored(tab)) return;
 
                 var url = removeHash(tabs[0].url);
                 if (getItemIndex(url) === -1) return; // The page still not captured
 
-                if (isBrowsingType(lastActiveItem.type)) {
-                    lastActiveItem.endTime = Math.max(lastActiveItem.endTime, new Date());
-                }
+                lastActiveBrowsingItem.endTime = Math.max(lastActiveBrowsingItem.endTime, new Date());
             });
         }, 1000);
     }

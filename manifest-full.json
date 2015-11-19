@@ -25,6 +25,13 @@
         "persistent": false
     },
 
+    "content_scripts": [ {
+        "matches" : ["http://*/*", "https://*/*"],
+        "js": ["src/bower_components/jquery/dist/jquery.min.js", "src/bower_components/bootstrap/dist/js/bootstrap.min.js", "src/bower_components/jquery-ui.min.js", "src/js/content-scripts/highlight.js", "src/js/content-scripts/content.js"],
+        "css": ["src/css/content.css"],
+        "run_at": "document_end"
+    } ],
+
     "permissions": [
         "<all_urls>",
         "chrome://favicon/",
